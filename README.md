@@ -10,6 +10,8 @@ On host system it's needed to give USB devices access to plugdev group, for that
 SUBSYSTEM=="usb", ATTR{idVendor}=="1004", MODE="0660", GROUP="plugdev"
 # SAMSUNG
 SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0660", GROUP="plugdev"
+# PIXEL
+SUBSYSTEM=="usb", ATTR{idVendor}=="18D1", MODE="0660", GROUP="plugdev"
 # ...
 ```
 where you need a new rule for each smartphone vendor you have. Then reload udev rules with `sudo udevadm control --reload-rules && sudo udevadm trigger`.
@@ -46,7 +48,7 @@ docker run -d \
     --group-add $PLUGDEV_GID \
     --group-add $ADB_GID \
     --name adb \
-    adbserver
+    adbserver-lite-v1
 ```
 where `<ADB_PRIVATE_KEY_FILE>` is the path to ADB public key file and `<ADB_PRIVATE_KEY_FILE>` to the private key file, they are commonly found at `~/.android/adbkey` and `~/.android/adbkey.pub` respectively. If you don't have already generated keys you can skip these steps and let ADB generate new keys within the container, but these keys will be regenerated every time the container is recreated and you will need to authorize new debugging clients on your smartphone.
 
